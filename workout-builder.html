@@ -481,11 +481,15 @@
 
         // Initialize
         window.addEventListener('DOMContentLoaded', async () => {
-            await initializeFirebase();
-            loadData();
-            renderLibrary();
-            renderCurrentWorkout();
-        });
+    await initializeFirebase();
+    loadData();
+    // Force a second load from Firebase after init
+    setTimeout(async () => {
+        await loadFromFirebase();
+    }, 1000);
+    renderLibrary();
+    renderCurrentWorkout();
+});
 
         async function initializeFirebase() {
             const config = {
