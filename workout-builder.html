@@ -244,7 +244,7 @@
 
         .exercise-row {
             display: grid;
-            grid-template-columns: 2fr 3fr 1fr 1fr 2fr;
+            grid-template-columns: 2fr 3fr 1fr 1fr;
             gap: 10px;
             padding: 10px;
             background: #444;
@@ -376,7 +376,6 @@
             <button class="tab active" onclick="switchTab('library')">Exercise Library</button>
             <button class="tab" onclick="switchTab('current')">Current Week</button>
             <button class="tab" onclick="switchTab('archived')">Archived Weeks</button>
-            <button class="tab" onclick="switchTab('setup')">Firebase Setup</button>
         </div>
 
         <!-- Exercise Library Tab -->
@@ -462,7 +461,7 @@
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Tuesday': { type: 'cardio' },
+            'Tuesday': { type: 'recovery' },
             'Wednesday': { type: 'lifting', sets: [
                 { name: 'Set 1', muscles: ['WARMUP'] },
                 { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
@@ -470,7 +469,7 @@
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Thursday': { type: 'cardio' },
+            'Thursday': { type: 'recovery' },
             'Friday': { type: 'lifting', sets: [
                 { name: 'Set 1', muscles: ['WARMUP'] },
                 { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
@@ -478,7 +477,7 @@
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Saturday': { type: 'cardio' }
+            'Saturday': { type: 'recovery' }
         };
 
         let exerciseLibrary = {};
@@ -611,7 +610,7 @@
                         }))
                     }));
                 } else {
-                    workout[day] = { cardio: '' };
+                    workout[day] = { cardio: '', mobility: '' };
                 }
             });
             return workout;
@@ -698,15 +697,24 @@
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'workout-day';
 
-                if (WORKOUT_STRUCTURE[day].type === 'cardio') {
+                if (WORKOUT_STRUCTURE[day].type === 'recovery') {
                     dayDiv.innerHTML = `
                         <div class="day-header cardio">
-                            <h3>${day} - Cardio</h3>
+                            <h3>${day} - Recovery Day</h3>
                         </div>
-                        <input type="text" class="cardio-input" 
-                               value="${currentWorkout[day]?.cardio || ''}"
-                               onchange="updateCardio('${day}', this.value)"
-                               placeholder="e.g., 30m treadmill, Pickleball, etc.">
+                        <div style="background: #3a3a3a; padding: 15px; border-radius: 6px;">
+                            <label style="display: block; font-weight: 600; color: #ff7900; margin-bottom: 5px;">Cardio:</label>
+                            <input type="text" class="cardio-input" 
+                                   value="${currentWorkout[day]?.cardio || ''}"
+                                   onchange="updateCardioField('${day}', 'cardio', this.value)"
+                                   placeholder="e.g., 30m treadmill, Pickleball, etc."
+                                   style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: 600; color: #ff7900; margin-bottom: 5px;">Mobility:</label>
+                            <input type="text" class="cardio-input" 
+                                   value="${currentWorkout[day]?.mobility || ''}"
+                                   onchange="updateCardioField('${day}', 'mobility', this.value)"
+                                   placeholder="e.g., Yoga, Stretching, Foam rolling, etc.">
+                        </div>
                     `;
                 } else {
                     let html = `<div class="day-header"><h3>${day}</h3></div>`;
@@ -735,8 +743,6 @@
                                            onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'reps', this.value)">
                                     <input type="number" placeholder="Sets" value="${ex.sets || ''}"
                                            onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'sets', this.value)">
-                                    <input type="text" placeholder="Notes..." value="${ex.notes || ''}"
-                                           onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'notes', this.value)">
                                 </div>
                             `;
                         });
@@ -756,8 +762,8 @@
             saveToFirebase();
         }
 
-        window.updateCardio = function(day, value) {
-            currentWorkout[day].cardio = value;
+        window.updateCardioField = function(day, field, value) {
+            currentWorkout[day][field] = value;
             saveToFirebase();
         }
 
