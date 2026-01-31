@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Builder</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiV29ya291dCBCdWlsZGVyIiwic2hvcnRfbmFtZSI6IldvcmtvdXQiLCJzdGFydF91cmwiOiIvIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFhMWExYSIsInRoZW1lX2NvbG9yIjoiI2ZmNzkwMCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSTFNVE1pSUdobGFXZG9kRDBpTlRFeklqNDhjbVZqZENCM2FXUjBhRDBpTlRFeklpQm9aV2xuYUhROUlqVXhNeUlnWm1sc2JEMGlJMlptTnprd01DSXZQand2YzNablBnPT0iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c7a7b 0%, #1a5f63 100%);
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1em;
+            font-weight: normal;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 28px;
+            background: #3a3a3a;
+            border: none;
+            border-radius: 6px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: normal;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: #444;
+            transform: translateY(-1px);
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #2c7a7b 0%, #1a5f63 100%);
+            box-shadow: 0 2px 8px rgba(44, 122, 123, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            color: #4fd1c5;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: normal;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .muscle-group {
+            background: #333;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .muscle-group h3 {
+            color: #4fd1c5;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: normal;
+        }
+
+        .exercise-list {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .exercise-item {
+            background: #3a3a3a;
+            padding: 10px 14px;
+            margin: 8px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .exercise-item:hover {
+            background: #444;
+        }
+
+        .delete-btn {
+            background: #d32f2f;
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #b71c1c;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        input[type="text"], select, textarea {
+            background: #3a3a3a;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 1em;
+            flex: 1;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+        }
+
+        input[type="text"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4fd1c5;
+        }
+
+        input[type="number"] {
+            background: #3a3a3a;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            padding: 8px;
+            border-radius: 4px;
+            width: 70px;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #4fd1c5;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #2c7a7b 0%, #1a5f63 100%);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: normal;
+            transition: all 0.2s;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(44, 122, 123, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #555 0%, #444 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .workout-day {
+            background: #333;
+            border-radius: 6px;
+            padding: 0;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #2c7a7b 0%, #1a5f63 100%);
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .day-header:hover {
+            background: linear-gradient(135deg, #347a7c 0%, #246164 100%);
+        }
+
+        .day-header h3 {
+            font-weight: normal;
+            font-size: 1.3em;
+        }
+
+        .collapse-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .collapse-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .day-header.cardio {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        }
+
+        .day-header.cardio:hover {
+            background: linear-gradient(135deg, #5CB860 0%, #357a38 100%);
+        }
+
+        .day-content {
+            padding: 20px;
+            display: block;
+        }
+
+        .day-content.collapsed {
+            display: none;
+        }
+
+        .set-group {
+            background: #3a3a3a;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .set-header {
+            background: #2c7a7b;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+
+        .exercise-row {
+            display: grid;
+            grid-template-columns: 1.5fr 2.5fr 0.8fr 0.8fr 2fr;
+            gap: 12px;
+            padding: 12px;
+            background: #444;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            align-items: center;
+            cursor: move;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .exercise-row:hover {
+            background: #4a4a4a;
+        }
+
+        .exercise-row.dragging {
+            opacity: 0.5;
+        }
+
+        .exercise-row.drag-over {
+            border-top: 2px solid #4fd1c5;
+        }
+
+        .exercise-row label {
+            font-weight: normal;
+            color: #4fd1c5;
+        }
+
+        .cardio-input {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .status-success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-error {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .status-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .library-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .exercise-row {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            body {
+                padding: 15px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Workout Builder</h1>
+            <div class="subtitle">Build, track, and save weekly workouts</div>
+        </header>
+
+        <div id="statusMessage"></div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('library')">Exercise Library</button>
+            <button class="tab" onclick="switchTab('current')">Current Week</button>
+        </div>
+
+        <!-- Exercise Library Tab -->
+        <div id="library" class="tab-content active">
+            <div class="card">
+                <h2>Exercise Library</h2>
+                <div class="library-grid" id="libraryGrid"></div>
+            </div>
+        </div>
+
+        <!-- Current Week Tab -->
+        <div id="current" class="tab-content">
+            <div class="card">
+                <h2>Current Week</h2>
+                
+                <div class="button-group">
+                    <button class="btn" onclick="buildWorkouts()">🏋️ Build Workouts</button>
+                    <button class="btn btn-secondary" onclick="clearWorkouts()">Clear Workouts</button>
+                </div>
+
+                <div id="workoutWeek"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        let db = null;
+        let firebaseApp = null;
+
+        const MUSCLE_GROUPS = ['Chest', 'Triceps', 'Glutes', 'Quads', 'Back', 'Biceps', 'Hamstrings', 'Calves', 'Core', 'Cardio', 'Mobility'];
+        
+        const WORKOUT_STRUCTURE = {
+            'Lift 1': { type: 'lifting', sets: [
+                { name: 'Set 1', muscles: ['WARMUP'] },
+                { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
+                { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
+                { name: 'Set 4', muscles: ['Back', 'Biceps'] },
+                { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
+            ]},
+            'Recovery 1': { type: 'recovery' },
+            'Lift 2': { type: 'lifting', sets: [
+                { name: 'Set 1', muscles: ['WARMUP'] },
+                { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
+                { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
+                { name: 'Set 4', muscles: ['Back', 'Biceps'] },
+                { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
+            ]},
+            'Recovery 2': { type: 'recovery' },
+            'Lift 3': { type: 'lifting', sets: [
+                { name: 'Set 1', muscles: ['WARMUP'] },
+                { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
+                { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
+                { name: 'Set 4', muscles: ['Back', 'Biceps'] },
+                { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
+            ]},
+            'Recovery 3': { type: 'recovery' }
+        };
+
+        let exerciseLibrary = {};
+        let currentWorkout = {};
+        let collapsedDays = {};
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await initializeFirebase();
+            loadData();
+            setTimeout(async () => {
+                await loadFromFirebase();
+            }, 1000);
+            renderLibrary();
+            renderCurrentWorkout();
+        });
+
+        async function initializeFirebase() {
+            const config = {
+                "apiKey": "AIzaSyBMZv4ioJyAXb1gLguFsyzRQ2Z__0eFnlA",
+                "authDomain": "workout-builder-594e0.firebaseapp.com",
+                "databaseURL": "https://workout-builder-594e0-default-rtdb.firebaseio.com/",
+                "projectId": "workout-builder-594e0",
+                "storageBucket": "workout-builder-594e0.firebasestorage.app",
+                "messagingSenderId": "993114198690",
+                "appId": "1:993114198690:web:28184c0687f55c45ecfdfb",
+                "measurementId": "G-4SV892BS5H"
+            };
+
+            try {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+                const { getDatabase, ref, set, get, child } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
+                
+                window.firebaseModules = { ref, set, get, child };
+                
+                firebaseApp = initializeApp(config);
+                db = getDatabase(firebaseApp);
+                
+                showStatus('Connected to Database!', 'success');
+                await loadFromFirebase();
+            } catch (error) {
+                console.error('Firebase init error:', error);
+                showStatus('Firebase connection failed. Check console for details.', 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.textContent = message;
+            setTimeout(() => statusDiv.textContent = '', 5000);
+        }
+
+        async function loadFromFirebase() {
+            if (!db) return;
+            
+            const { ref, get, child } = window.firebaseModules;
+            const dbRef = ref(db);
+            
+            try {
+                const snapshot = await get(child(dbRef, 'workoutData'));
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    exerciseLibrary = data.library || initializeLibrary();
+                    currentWorkout = data.currentWorkout || initializeWorkout();
+                    
+                    renderLibrary();
+                    renderCurrentWorkout();
+                } else {
+                    exerciseLibrary = initializeLibrary();
+                    currentWorkout = initializeWorkout();
+                }
+            } catch (error) {
+                console.error('Firebase load error:', error);
+                loadData();
+            }
+        }
+
+        async function saveToFirebase() {
+            if (!db) {
+                saveData();
+                return;
+            }
+            
+            const { ref, set } = window.firebaseModules;
+            
+            try {
+                await set(ref(db, 'workoutData'), {
+                    library: exerciseLibrary,
+                    currentWorkout: currentWorkout,
+                    lastUpdated: new Date().toISOString()
+                });
+                saveData();
+            } catch (error) {
+                console.error('Firebase save error:', error);
+                saveData();
+            }
+        }
+
+        function initializeLibrary() {
+            const lib = {};
+            MUSCLE_GROUPS.forEach(muscle => {
+                lib[muscle] = [];
+            });
+            return lib;
+        }
+
+        function initializeWorkout() {
+            const workout = {};
+            Object.keys(WORKOUT_STRUCTURE).forEach(day => {
+                if (WORKOUT_STRUCTURE[day].type === 'lifting') {
+                    workout[day] = WORKOUT_STRUCTURE[day].sets.map(set => ({
+                        name: set.name,
+                        exercises: set.muscles.map(muscle => ({
+                            muscle: muscle,
+                            exercise: muscle === 'WARMUP' ? 'WARMUP' : '',
+                            reps: '8',
+                            sets: '3',
+                            notes: ''
+                        }))
+                    }));
+                } else {
+                    workout[day] = { cardio: '', mobility: '' };
+                }
+            });
+            return workout;
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('workoutData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                exerciseLibrary = data.library || initializeLibrary();
+                currentWorkout = data.currentWorkout || initializeWorkout();
+            } else {
+                exerciseLibrary = initializeLibrary();
+                currentWorkout = initializeWorkout();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('workoutData', JSON.stringify({
+                library: exerciseLibrary,
+                currentWorkout: currentWorkout
+            }));
+        }
+
+        function renderLibrary() {
+            const grid = document.getElementById('libraryGrid');
+            grid.innerHTML = '';
+
+            MUSCLE_GROUPS.forEach(muscle => {
+                const div = document.createElement('div');
+                div.className = 'muscle-group';
+                
+                let html = `<h3>${muscle}</h3><ul class="exercise-list">`;
+                
+                (exerciseLibrary[muscle] || []).forEach((exercise, idx) => {
+                    html += `
+                        <li class="exercise-item">
+                            <span>${exercise}</span>
+                            <button class="delete-btn" onclick="window.deleteExercise('${muscle}', ${idx})">×</button>
+                        </li>
+                    `;
+                });
+                
+                html += `</ul>
+                    <div class="input-group">
+                        <input type="text" id="new-${muscle}" placeholder="Add Exercise" 
+                               onkeypress="if(event.key==='Enter') window.addExercise('${muscle}')"
+                               style="width: 100%;">
+                    </div>
+                `;
+                
+                div.innerHTML = html;
+                grid.appendChild(div);
+            });
+        }
+
+        window.addExercise = function(muscle) {
+            const input = document.getElementById(`new-${muscle}`);
+            const exercise = input.value.trim();
+            
+            if (exercise) {
+                if (!exerciseLibrary[muscle]) exerciseLibrary[muscle] = [];
+                exerciseLibrary[muscle].push(exercise);
+                input.value = '';
+                renderLibrary();
+                saveToFirebase();
+            }
+        }
+
+        window.deleteExercise = function(muscle, idx) {
+            exerciseLibrary[muscle].splice(idx, 1);
+            renderLibrary();
+            saveToFirebase();
+        }
+
+        window.toggleDay = function(day) {
+            collapsedDays[day] = !collapsedDays[day];
+            const content = document.getElementById(`content-${day}`);
+            const icon = document.getElementById(`icon-${day}`);
+            
+            if (collapsedDays[day]) {
+                content.classList.add('collapsed');
+                icon.classList.add('collapsed');
+            } else {
+                content.classList.remove('collapsed');
+                icon.classList.remove('collapsed');
+            }
+        }
+
+        function renderCurrentWorkout() {
+            const container = document.getElementById('workoutWeek');
+            container.innerHTML = '';
+
+            Object.keys(WORKOUT_STRUCTURE).forEach((day, dayIdx) => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'workout-day';
+
+                const isCollapsed = collapsedDays[day] || false;
+
+                if (WORKOUT_STRUCTURE[day].type === 'recovery') {
+                    dayDiv.innerHTML = `
+                        <div class="day-header cardio" onclick="toggleDay('${day}')">
+                            <h3>${day} - Recovery Day</h3>
+                            <span class="collapse-icon ${isCollapsed ? 'collapsed' : ''}" id="icon-${day}">▼</span>
+                        </div>
+                        <div class="day-content ${isCollapsed ? 'collapsed' : ''}" id="content-${day}">
+                            <label style="display: block; font-weight: normal; color: #4fd1c5; margin-bottom: 8px;">Cardio:</label>
+                            <input type="text" class="cardio-input" 
+                                   value="${currentWorkout[day]?.cardio || ''}"
+                                   onchange="updateCardioField('${day}', 'cardio', this.value)"
+                                   placeholder="e.g., 30m treadmill, Pickleball, etc."
+                                   style="margin-bottom: 15px;">
+                            <label style="display: block; font-weight: normal; color: #4fd1c5; margin-bottom: 8px;">Mobility:</label>
+                            <input type="text" class="cardio-input" 
+                                   value="${currentWorkout[day]?.mobility || ''}"
+                                   onchange="updateCardioField('${day}', 'mobility', this.value)"
+                                   placeholder="e.g., Yoga, Stretching, Foam rolling, etc.">
+                        </div>
+                    `;
+                } else {
+                    let html = `
+                        <div class="day-header" onclick="toggleDay('${day}')">
+                            <h3>${day}</h3>
+                            <span class="collapse-icon ${isCollapsed ? 'collapsed' : ''}" id="icon-${day}">▼</span>
+                        </div>
+                        <div class="day-content ${isCollapsed ? 'collapsed' : ''}" id="content-${day}">
+                    `;
+                    
+                    currentWorkout[day].forEach((set, setIdx) => {
+                        html += `<div class="set-group">
+                            <div class="set-header">${set.name}: ${set.exercises.map(e => e.muscle).join(' + ')}</div>`;
+                        
+                        set.exercises.forEach((ex, exIdx) => {
+                            const muscleExercises = exerciseLibrary[ex.muscle] || [];
+                            const isWarmup = ex.muscle === 'WARMUP';
+                            
+                            html += `
+                                <div class="exercise-row" draggable="${!isWarmup}" 
+                                     data-day="${day}" data-set="${setIdx}" data-ex="${exIdx}"
+                                     ondragstart="handleDragStart(event)" 
+                                     ondragover="handleDragOver(event)" 
+                                     ondrop="handleDrop(event)"
+                                     ondragend="handleDragEnd(event)">
+                                    <label>${ex.muscle}</label>
+                                    ${isWarmup ? 
+                                        `<input type="text" value="WARMUP" disabled style="background:#555;">` :
+                                        `<select onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'exercise', this.value)">
+                                            <option value="">Select exercise...</option>
+                                            ${muscleExercises.map(e => 
+                                                `<option value="${e}" ${ex.exercise === e ? 'selected' : ''}>${e}</option>`
+                                            ).join('')}
+                                        </select>`
+                                    }
+                                    <input type="number" placeholder="Reps" value="${ex.reps || '8'}"
+                                           onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'reps', this.value)">
+                                    <input type="number" placeholder="Sets" value="${ex.sets || '3'}"
+                                           onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'sets', this.value)">
+                                    <input type="text" placeholder="Notes..." value="${ex.notes || ''}"
+                                           onchange="updateExercise('${day}', ${setIdx}, ${exIdx}, 'notes', this.value)">
+                                </div>
+                            `;
+                        });
+                        
+                        html += `</div>`;
+                    });
+                    
+                    html += `</div>`;
+                    dayDiv.innerHTML = html;
+                }
+
+                container.appendChild(dayDiv);
+            });
+        }
+
+        let draggedElement = null;
+        let draggedData = null;
+
+        window.handleDragStart = function(e) {
+            draggedElement = e.target;
+            draggedData = {
+                day: e.target.dataset.day,
+                set: parseInt(e.target.dataset.set),
+                ex: parseInt(e.target.dataset.ex)
+            };
+            e.target.classList.add('dragging');
+        }
+
+        window.handleDragOver = function(e) {
+            e.preventDefault();
+            const target = e.target.closest('.exercise-row');
+            if (target && target !== draggedElement) {
+                target.classList.add('drag-over');
+            }
+        }
+
+        window.handleDrop = function(e) {
+            e.preventDefault();
+            const target = e.target.closest('.exercise-row');
+            
+            if (target && target !== draggedElement && draggedData) {
+                const targetData = {
+                    day: target.dataset.day,
+                    set: parseInt(target.dataset.set),
+                    ex: parseInt(target.dataset.ex)
+                };
+                
+                if (draggedData.day === targetData.day && draggedData.set === targetData.set) {
+                    const exercises = currentWorkout[draggedData.day][draggedData.set].exercises;
+                    const temp = exercises[draggedData.ex];
+                    exercises.splice(draggedData.ex, 1);
+                    exercises.splice(targetData.ex, 0, temp);
+                    
+                    renderCurrentWorkout();
+                    saveToFirebase();
+                }
+            }
+            
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        window.handleDragEnd = function(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+            draggedElement = null;
+            draggedData = null;
+        }
+
+        window.updateExercise = function(day, setIdx, exIdx, field, value) {
+            currentWorkout[day][setIdx].exercises[exIdx][field] = value;
+            saveToFirebase();
+        }
+
+        window.updateCardioField = function(day, field, value) {
+            currentWorkout[day][field] = value;
+            saveToFirebase();
+        }
+
+        window.buildWorkouts = function() {
+            Object.keys(WORKOUT_STRUCTURE).forEach(day => {
+                if (WORKOUT_STRUCTURE[day].type === 'lifting') {
+                    currentWorkout[day].forEach(set => {
+                        set.exercises.forEach(ex => {
+                            if (ex.muscle !== 'WARMUP') {
+                                const exercises = exerciseLibrary[ex.muscle] || [];
+                                if (exercises.length > 0) {
+                                    const randomIdx = Math.floor(Math.random() * exercises.length);
+                                    ex.exercise = exercises[randomIdx];
+                                }
+                                ex.reps = '8';
+                                ex.sets = '3';
+                            }
+                        });
+                    });
+                }
+            });
+            
+            renderCurrentWorkout();
+            saveToFirebase();
+            showStatus('Workouts generated successfully!', 'success');
+        }
+
+        window.clearWorkouts = function() {
+            if (confirm('Clear all workouts? This cannot be undone.')) {
+                currentWorkout = initializeWorkout();
+                renderCurrentWorkout();
+                saveToFirebase();
+                showStatus('Workouts cleared!', 'success');
+            }
+        }
+
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
