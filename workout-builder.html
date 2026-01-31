@@ -366,8 +366,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>💪 Workout Builder</h1>
-            <div class="subtitle">Build, track, and save your weekly workouts</div>
+            <h1>Workout Builder</h1>
+            <div class="subtitle">Build, track, and save weekly workouts</div>
         </header>
 
         <div id="statusMessage"></div>
@@ -451,33 +451,33 @@
         let db = null;
         let firebaseApp = null;
 
-        const MUSCLE_GROUPS = ['Chest', 'Triceps', 'Glutes', 'Quads', 'Back', 'Biceps', 'Hamstrings', 'Calves', 'Core', 'Cardio'];
+        const MUSCLE_GROUPS = ['Chest', 'Triceps', 'Glutes', 'Quads', 'Back', 'Biceps', 'Hamstrings', 'Calves', 'Core', 'Cardio', 'Mobility'];
         
         const WORKOUT_STRUCTURE = {
-            'Monday': { type: 'lifting', sets: [
+            'Lift 1': { type: 'lifting', sets: [
                 { name: 'Set 1', muscles: ['WARMUP'] },
                 { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
                 { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Tuesday': { type: 'recovery' },
-            'Wednesday': { type: 'lifting', sets: [
+            'Recovery 1': { type: 'recovery' },
+            'Lift 2': { type: 'lifting', sets: [
                 { name: 'Set 1', muscles: ['WARMUP'] },
                 { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
                 { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Thursday': { type: 'recovery' },
-            'Friday': { type: 'lifting', sets: [
+            'Recovery 2': { type: 'recovery' },
+            'Lift 3': { type: 'lifting', sets: [
                 { name: 'Set 1', muscles: ['WARMUP'] },
                 { name: 'Set 2', muscles: ['Chest', 'Triceps'] },
                 { name: 'Set 3', muscles: ['Glutes', 'Quads'] },
                 { name: 'Set 4', muscles: ['Back', 'Biceps'] },
                 { name: 'Set 5', muscles: ['Hamstrings', 'Calves', 'Core'] }
             ]},
-            'Saturday': { type: 'recovery' }
+            'Recovery 3': { type: 'recovery' }
         };
 
         let exerciseLibrary = {};
@@ -660,12 +660,12 @@
                 });
                 
                 html += `</ul>
-                    <div class="input-group">
-                        <input type="text" id="new-${muscle}" placeholder="Add exercise..." 
-                               onkeypress="if(event.key==='Enter') window.addExercise('${muscle}')">
-                        <button class="btn" onclick="window.addExercise('${muscle}')">+</button>
-                    </div>
-                `;
+    <div class="input-group">
+        <input type="text" id="new-${muscle}" placeholder="Add exercise (press Enter)..." 
+               onkeypress="if(event.key==='Enter') window.addExercise('${muscle}')"
+               style="width: 100%;">
+    </div>
+`;
                 
                 div.innerHTML = html;
                 grid.appendChild(div);
