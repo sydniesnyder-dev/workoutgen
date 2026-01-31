@@ -59,7 +59,7 @@
             color: #e0e0e0;
             cursor: pointer;
             font-size: 1em;
-            font-weight: 600;
+            font-weight: 300;
             transition: all 0.3s;
         }
 
@@ -191,7 +191,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s;
         }
 
@@ -239,7 +239,7 @@
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 10px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .exercise-row {
@@ -254,7 +254,7 @@
         }
 
         .exercise-row label {
-            font-weight: 600;
+            font-weight: 500;
             color: #4fd1c5;
         }
 
@@ -301,7 +301,7 @@
 
         .week-notes label {
             display: block;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 5px;
             color: #4fd1c5;
         }
@@ -330,7 +330,7 @@
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .status-success {
@@ -705,13 +705,13 @@
                             <h3>${day} - Recovery Day</h3>
                         </div>
                         <div style="background: #3a3a3a; padding: 15px; border-radius: 6px;">
-                            <label style="display: block; font-weight: 600; color: #4fd1c5; margin-bottom: 5px;">Cardio:</label>
+                            <label style="display: block; font-weight: 500; color: #4fd1c5; margin-bottom: 5px;">Cardio:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.cardio || ''}"
                                    onchange="updateCardioField('${day}', 'cardio', this.value)"
                                    placeholder="e.g., 30m treadmill, Pickleball, etc."
                                    style="margin-bottom: 15px;">
-                            <label style="display: block; font-weight: 600; color: #4fd1c5; margin-bottom: 5px;">Mobility:</label>
+                            <label style="display: block; font-weight: 500; color: #4fd1c5; margin-bottom: 5px;">Mobility:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.mobility || ''}"
                                    onchange="updateCardioField('${day}', 'mobility', this.value)"
