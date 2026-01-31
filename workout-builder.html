@@ -254,7 +254,7 @@
         }
 
         .exercise-row label {
-            font-weight: 500;
+            font-weight: 300;
             color: #4fd1c5;
         }
 
@@ -705,13 +705,13 @@
                             <h3>${day} - Recovery Day</h3>
                         </div>
                         <div style="background: #3a3a3a; padding: 15px; border-radius: 6px;">
-                            <label style="display: block; font-weight: 500; color: #4fd1c5; margin-bottom: 5px;">Cardio:</label>
+                            <label style="display: block; font-weight: 400; color: #4fd1c5; margin-bottom: 5px;">Cardio:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.cardio || ''}"
                                    onchange="updateCardioField('${day}', 'cardio', this.value)"
                                    placeholder="e.g., 30m treadmill, Pickleball, etc."
                                    style="margin-bottom: 15px;">
-                            <label style="display: block; font-weight: 500; color: #4fd1c5; margin-bottom: 5px;">Mobility:</label>
+                            <label style="display: block; font-weight: 400; color: #4fd1c5; margin-bottom: 5px;">Mobility:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.mobility || ''}"
                                    onchange="updateCardioField('${day}', 'mobility', this.value)"
