@@ -690,8 +690,6 @@
             const container = document.getElementById('workoutWeek');
             container.innerHTML = '';
 
-            document.getElementById('weekNotes').value = currentWorkout.notes || '';
-
             Object.keys(WORKOUT_STRUCTURE).forEach(day => {
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'workout-day';
@@ -795,8 +793,6 @@
             
             const weekName = `${formatDate(weekStart)}-${formatDate(weekEnd)}`;
             
-            currentWorkout.notes = document.getElementById('weekNotes').value;
-            
             archivedWorkouts.unshift({
                 name: weekName,
                 date: new Date().toISOString(),
@@ -859,17 +855,6 @@
             event.target.classList.add('active');
             document.getElementById(tabName).classList.add('active');
         }
-
-        // Auto-save notes
-        document.addEventListener('DOMContentLoaded', () => {
-            const notesField = document.getElementById('weekNotes');
-            if (notesField) {
-                notesField.addEventListener('change', () => {
-                    currentWorkout.notes = notesField.value;
-                    saveToFirebase();
-                });
-            }
-        });
     </script>
 </body>
 </html>
