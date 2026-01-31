@@ -794,7 +794,7 @@
         }
 
         window.saveAndClear = function() {
-            const weekStart = getMonday(new Date());
+            const weekStart = getLift 1(new Date());
             const weekEnd = new Date(weekStart);
             weekEnd.setDate(weekEnd.getDate() + 6);
             
@@ -816,7 +816,7 @@
             showStatus(`Week saved as ${weekName}!`, 'success');
         }
 
-        function getMonday(d) {
+        function getLift 1(d) {
             d = new Date(d);
             const day = d.getDay();
             const diff = d.getDate() - day + (day === 0 ? -6 : 1);
