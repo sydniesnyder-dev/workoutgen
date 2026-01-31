@@ -513,7 +513,7 @@
                 firebaseApp = initializeApp(config);
                 db = getDatabase(firebaseApp);
                 
-                showStatus('Firebase connected successfully!', 'success');
+                showStatus('Connected to Database!', 'success');
                 await loadFromFirebase();
             } catch (error) {
                 
