@@ -26,7 +26,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, #ff7900 0%, #ff5500 100%);
+            background: linear-gradient(135deg, #0C8990 0%, #408F90 100%);
             padding: 30px;
             border-radius: 15px;
             margin-bottom: 30px;
@@ -69,7 +69,7 @@
         }
 
         .tab.active {
-            background: linear-gradient(135deg, #ff7900 0%, #ff5500 100%);
+            background: linear-gradient(135deg, #0C8990 0%, #408F90 100%);
             box-shadow: 0 4px 15px rgba(255, 121, 0, 0.4);
         }
 
@@ -96,7 +96,7 @@
         }
 
         .card h2 {
-            color: #ff7900;
+            color: #0C8990;
             margin-bottom: 20px;
             font-size: 1.8em;
         }
@@ -115,7 +115,7 @@
         }
 
         .muscle-group h3 {
-            color: #ff7900;
+            color: #0C8990;
             margin-bottom: 10px;
             font-size: 1.2em;
         }
@@ -171,7 +171,7 @@
 
         input[type="text"]:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #ff7900;
+            border-color: #0C8990;
         }
 
         input[type="number"] {
@@ -184,7 +184,7 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, #ff7900 0%, #ff5500 100%);
+            background: linear-gradient(135deg, #0C8990 0%, #408F90 100%);
             border: none;
             color: white;
             padding: 12px 25px;
@@ -216,7 +216,7 @@
         }
 
         .day-header {
-            background: linear-gradient(135deg, #ff7900 0%, #ff5500 100%);
+            background: linear-gradient(135deg, #0C8990 0%, #408F90 100%);
             padding: 15px;
             border-radius: 6px;
             margin-bottom: 15px;
@@ -234,7 +234,7 @@
         }
 
         .set-header {
-            background: #ff7900;
+            background: #0C8990;
             color: white;
             padding: 10px 15px;
             border-radius: 6px;
@@ -255,7 +255,7 @@
 
         .exercise-row label {
             font-weight: 600;
-            color: #ff7900;
+            color: #0C8990;
         }
 
         .cardio-input {
@@ -291,7 +291,7 @@
         }
 
         .week-card h3 {
-            color: #ff7900;
+            color: #0C8990;
             margin-bottom: 5px;
         }
 
@@ -303,7 +303,7 @@
             display: block;
             font-weight: 600;
             margin-bottom: 5px;
-            color: #ff7900;
+            color: #0C8990;
         }
 
         .firebase-setup {
@@ -311,11 +311,11 @@
             padding: 20px;
             border-radius: 8px;
             margin-top: 20px;
-            border: 2px solid #ff7900;
+            border: 2px solid #0C8990;
         }
 
         .firebase-setup h3 {
-            color: #ff7900;
+            color: #0C8990;
             margin-bottom: 15px;
         }
 
@@ -419,7 +419,7 @@
                 <h2>Firebase Setup Instructions</h2>
                 
                 <ol style="line-height: 2; margin: 20px 0;">
-                    <li>Go to <a href="https://console.firebase.google.com/" target="_blank" style="color: #ff7900;">Firebase Console</a></li>
+                    <li>Go to <a href="https://console.firebase.google.com/" target="_blank" style="color: #0C8990;">Firebase Console</a></li>
                     <li>Click "Add Project" and create a new project</li>
                     <li>In your project, click the web icon (&lt;/&gt;) to add a web app</li>
                     <li>Register your app (name it "Workout Builder")</li>
@@ -706,13 +706,13 @@
                             <h3>${day} - Recovery Day</h3>
                         </div>
                         <div style="background: #3a3a3a; padding: 15px; border-radius: 6px;">
-                            <label style="display: block; font-weight: 600; color: #ff7900; margin-bottom: 5px;">Cardio:</label>
+                            <label style="display: block; font-weight: 600; color: #0C8990; margin-bottom: 5px;">Cardio:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.cardio || ''}"
                                    onchange="updateCardioField('${day}', 'cardio', this.value)"
                                    placeholder="e.g., 30m treadmill, Pickleball, etc."
                                    style="margin-bottom: 15px;">
-                            <label style="display: block; font-weight: 600; color: #ff7900; margin-bottom: 5px;">Mobility:</label>
+                            <label style="display: block; font-weight: 600; color: #0C8990; margin-bottom: 5px;">Mobility:</label>
                             <input type="text" class="cardio-input" 
                                    value="${currentWorkout[day]?.mobility || ''}"
                                    onchange="updateCardioField('${day}', 'mobility', this.value)"
